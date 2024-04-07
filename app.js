@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const mongoose = require('mongoose'); //like an import. We are importing every library and store it in a constant
 
 
 //middleware
@@ -31,6 +32,14 @@ app.post(`${api}/products`, (req, res) => {
   console.log(newProduct);
   res.send(newProduct);
 });
+
+mongoose.connect(process.env.CONNECTION_STRING)
+  .then(() => {
+    console.log('Database Connection is ready...')
+  })
+  .catch((error) => {
+    console.log(error); // Log the actual error message
+  });
 
 app.listen(3000, () => {
   
