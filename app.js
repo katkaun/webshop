@@ -4,33 +4,54 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose'); //like an import. We are importing every library and store it in a constant
 
+require('dotenv/config');
+const api = process.env.API_URL;
 
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny')); //to display log request 
 
 
-require('dotenv/config');
+const productSchema = mongoose.Schema({
+  name: String,
+  image: String,
+  countInStock: {
+    type: Number,
+    required: true,
+  }
+})
 
-const api = process.env.API_URL;
+const Product = mongoose.model('Product', productSchema);
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to the webshop!");
 });
 
-app.get(`${api}/products`, (req, res) => {
-  const product = {
-    id: 1,
-    name: 'hair dresser',
-    image: 'some_url',
+app.get(`${api}/products`, async (req, res) => {
+  const productList = await Product.find();
+
+  if(!productList) {
+    res.status(500).json({success: false})
   }
-  res.send(product);
+  res.send(productList);
 });
 
 app.post(`${api}/products`, (req, res) => {
-  const newProduct = req.body;
-  console.log(newProduct);
-  res.send(newProduct);
+  const product = new Product({
+    name: req.body.name,
+    image: req.body.image,
+    countInStock: req.body.countInStock,
+  })
+
+  product.save().then((createdProduct => {
+    res.status(201).json(createdProduct)
+  })).catch((error) => {
+    res.status(500).json({
+      error: error,
+      success: false,
+    })
+  })
 });
 
 mongoose.connect(process.env.CONNECTION_STRING)
