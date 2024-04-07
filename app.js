@@ -7,52 +7,17 @@ const mongoose = require('mongoose'); //like an import. We are importing every l
 require('dotenv/config');
 const api = process.env.API_URL;
 
+
+const productsRouter = require('./routers/products');
+
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny')); //to display log request 
 
 
-const productSchema = mongoose.Schema({
-  name: String,
-  image: String,
-  countInStock: {
-    type: Number,
-    required: true,
-  }
-})
+//Routers
+app.use(`${api}/products`, productsRouter);
 
-const Product = mongoose.model('Product', productSchema);
-
-
-app.get("/", (req, res) => {
-  res.send("Welcome to the webshop!");
-});
-
-app.get(`${api}/products`, async (req, res) => {
-  const productList = await Product.find();
-
-  if(!productList) {
-    res.status(500).json({success: false})
-  }
-  res.send(productList);
-});
-
-app.post(`${api}/products`, (req, res) => {
-  const product = new Product({
-    name: req.body.name,
-    image: req.body.image,
-    countInStock: req.body.countInStock,
-  })
-
-  product.save().then((createdProduct => {
-    res.status(201).json(createdProduct)
-  })).catch((error) => {
-    res.status(500).json({
-      error: error,
-      success: false,
-    })
-  })
-});
 
 mongoose.connect(process.env.CONNECTION_STRING)
   .then(() => {
@@ -66,3 +31,11 @@ app.listen(3000, () => {
   
   console.log('Server is running on port 3000');
 })
+
+
+
+//Rad 19 typ, under Routers.
+
+// app.get("/", (req, res) => {
+//   res.send("Welcome to the webshop!");
+// });
