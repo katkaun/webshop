@@ -7,6 +7,7 @@ const productSchema = mongoose.Schema({
       type: Number,
       required: true,
     }
-  })
-  
-  exports.Product = mongoose.model('Product', productSchema);
+});
+
+// Export the Product model directly
+module.exports = mongoose.model('Product', productSchema);
