@@ -11,4 +11,4 @@ router.get(`/`, async (req, res) => {
     res.send(orderList);
 })
 
-module.express = router;
+module.exports = router;

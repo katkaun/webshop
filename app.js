@@ -10,6 +10,15 @@ require('dotenv/config');
 app.use(cors());
 app.options('*', cors());
 
+//Database
+mongoose.connect(process.env.CONNECTION_STRING)
+  .then(() => {
+    console.log('Database Connection is ready...')
+  })
+  .catch((error) => {
+    console.log(error); 
+  });
+
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny')); //to display log request 
@@ -24,38 +33,17 @@ const ordersRoutes = require('./routes/orders');
 
 const api = process.env.API_URL;
 
-app.use(`${api}/categories`, productsRoutes);
+app.use(`${api}/categories`, categoriesRoutes);
 app.use(`${api}/products`, productsRoutes);
-app.use(`${api}/users`, productsRoutes);
-app.use(`${api}/orders`, productsRoutes);
+app.use(`${api}/users`, usersRoutes);
+app.use(`${api}/orders`, ordersRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the webshop!");
 });
 
-//Database
-mongoose.connect(process.env.CONNECTION_STRING)
-  .then(() => {
-    console.log('Database Connection is ready...')
-  })
-  .catch((error) => {
-    console.log(error); 
-  });
-
 //Server
 app.listen(3000, () => {
   
   console.log('Server is running on port 3000');
-})
-
-
-
-
-
-//Rad 19 typ, under Routers.
-
-// app.get("/", (req, res) => {
-//   res.send("Welcome to the webshop!");
-// });
-
- 
+});

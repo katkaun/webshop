@@ -11,4 +11,4 @@ router.get(`/`, async (req, res) => {
     res.send(userList);
 })
 
-module.express = router;
+module.exports = router;
