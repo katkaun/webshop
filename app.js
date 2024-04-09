@@ -7,8 +7,8 @@ const cors = require('cors');
 
 require('dotenv/config');
 
-app-use(cord());
-app.options('*', cors())
+app.use(cors());
+app.options('*', cors());
 
 //middleware
 app.use(bodyParser.json());
