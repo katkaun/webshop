@@ -16,12 +16,12 @@ mongoose.connect(process.env.CONNECTION_STRING)
     console.log('Database Connection is ready...')
   })
   .catch((error) => {
-    console.log(error); 
+    console.log(error);
   });
 
 //middleware
 app.use(bodyParser.json());
-app.use(morgan('tiny')); //to display log request 
+app.use(morgan('tiny')); //to display log request
 
 
 
