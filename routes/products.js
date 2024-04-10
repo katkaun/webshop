@@ -2,9 +2,16 @@ const Product = require('../models/product');
 const express = require('express');
 const Category = require('../models/category'); 
 const router = express.Router();
+const mongoose = require('mongoose');
 
 router.get(`/`, async (req, res) => {
-    const productList = await Product.find().populate('category')
+
+    let filter = {};
+    if(req.query.categories)
+    {
+      filter = {category: req.query.categories.split(',')}
+    }
+    const productList = await Product.find(filter).populate('category')
   
     if (!productList) {
       return res.status(500).json({success: false}); 
@@ -25,7 +32,7 @@ router.get(`/:id`, async (req, res) => {
     const category = await Category.findById(req.body.category);
     if(!category) return res.status(400).send('Invalid Category')
 
-    const product = new Product({
+    let product = new Product({
       name: req.body.name,
       description: req.body.description,
       richDescription: req.body.richDescription,
@@ -48,6 +55,10 @@ router.get(`/:id`, async (req, res) => {
   })
 
   router.put('/:id', async (req, res) => {
+    if(!mongoose.isValidObjectId(req.params.id)) {
+      res.status(400).send('Invalid Product Id');
+      return;
+    }
     const category = await Category.findById(req.body.category);
     if(!category) return res.status(400).send('Invalid Category')
 
@@ -74,6 +85,45 @@ router.get(`/:id`, async (req, res) => {
     }
 
     res.send(product);
+  });
+
+    router.delete('/:id', async (req, res) => {
+      try {
+          const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+          if (deletedProduct) {
+              return res.status(200).json({ success: true, message: 'The product is deleted' });
+          } else {
+              return res.status(404).json({ success: false, message: 'Product not found' });
+          }
+      } catch (error) {
+          res.status(500).json({ success: false, error: error.message });
+      }
+  });
+  
+  router.get(`/get/count`, async (req, res) => {
+    try {
+        const productCount = await Product.countDocuments();
+
+        if (productCount === 0) {
+            res.status(404).json({ success: false, message: 'No products found' });
+            return;
+        }
+
+        res.json({ success: true, count: productCount });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+  router.get(`/get/featured/:count`, async (req, res) => {
+    const count = req.params.count ? req.params.count : 0
+    const products = await Product.find({isFeatured: true}).limit(count);
+    
+    if(!products) {
+      res.status(500).json({success: false})
+    }
+    res.send(products);
 })
+
 
   module.exports = router;

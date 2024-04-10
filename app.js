@@ -24,7 +24,6 @@ app.use(bodyParser.json());
 app.use(morgan('tiny')); //to display log request
 
 
-
 //Routes
 const categoriesRoutes = require('./routes/categories');
 const productsRoutes = require('./routes/products');
