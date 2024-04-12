@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose'); //like an import. We are importing every library and store it in a constant
 const cors = require('cors');
-
 require('dotenv/config');
 
 app.use(cors());
@@ -21,7 +20,8 @@ mongoose.connect(process.env.CONNECTION_STRING)
 
 //middleware
 app.use(bodyParser.json());
-app.use(morgan('tiny')); //to display log request
+app.use(morgan('tiny'));      //to display log request
+
 
 
 //Routes
