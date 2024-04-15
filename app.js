@@ -5,8 +5,10 @@ const morgan = require('morgan');
 const mongoose = require('mongoose'); //like an import. We are importing every library and store it in a constant
 const cors = require('cors');
 require('dotenv/config');
-const authJwt = require('./helpers/jwt');
+// const authJwt = require('./helpers/jwt');
 const handleErrors = require('./helpers/handleErrors')
+
+
 
 app.use(cors());
 app.options('*', cors());
@@ -23,7 +25,7 @@ mongoose.connect(process.env.CONNECTION_STRING)
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny'));      //to display log request
-app.use(authJwt());
+// app.use(authJwt());
 app.use(handleErrors)
 
 
