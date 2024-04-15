@@ -10,7 +10,7 @@ const orderSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    shippingAddress2: { 
+    shippingAdress2: { 
       type: String,
     },
     city: {
@@ -39,7 +39,12 @@ const orderSchema = mongoose.Schema({
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     },
+    orderDate: {
+      type: Date,
+      default: Date.now
+    }
   })
 
   orderSchema.virtual('id').get(function () {
