@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose'); //like an import. We are importing every library and store it in a constant
 const cors = require('cors');
 require('dotenv/config');
-const authJwt = require('./helpers/jwt');
+// const authJwt = require('./helpers/jwt');
 const handleErrors = require('./helpers/handleErrors')
 
 
@@ -25,7 +25,7 @@ mongoose.connect(process.env.CONNECTION_STRING)
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny'));      //to display log request
-app.use(authJwt());
+// app.use(authJwt());
 app.use(handleErrors)
 
 
@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
 });
 
 //Server
-app.listen(3000, () => {
+app.listen(5000, () => {
   
-  console.log('Server is running on port 3000');
+  console.log('Server is running on port 5000');
 });
