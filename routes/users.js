@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
         passwordHash: bcrypt.hashSync(req.body.password, 10),
         phone: req.body.phone,
         isAdmin: req.body.isAdmin,
-        adress: req.body.adress,
+        address: req.body.address,
         apartment: req.body.apartment,
         city: req.body.city,
         zip: req.body.zip,
@@ -57,10 +57,10 @@ router.post('/login', async (req, res) => {
     if(user && bcrypt.compareSync(req.body.password, user.passwordHash)){
         const token = jwt.sign(
             {
-                userId: user.id,              //pass the data you want to with the token
+                userId: user.id,         
                 isAdmin: user.isAdmin 
             },          
-            secret,                           //pass a secret ex password which is used to create your tokens
+            secret,                           
             {expiresIn: '1d'}                           
         )
 
@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
             passwordHash: bcrypt.hashSync(req.body.password, 10),
             phone: req.body.phone,
             isAdmin: req.body.isAdmin,
-            adress: req.body.adress,
+            address: req.body.address,
             apartment: req.body.apartment,
             city: req.body.city,
             zip: req.body.zip,

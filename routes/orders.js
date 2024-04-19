@@ -56,8 +56,8 @@ router.post('/', async (req, res) => {
     
     let order = new Order({
         orderItems: savedOrderItemIds,
-        shippingAdress1: req.body.shippingAdress1,
-        shippingAdress2: req.body.shippingAdress2,
+        shippingAddress1: req.body.shippingAddress1,
+        shippingAddress2: req.body.shippingAddress2,
         city: req.body.city,
         zip: req.body.zip,
         country: req.body.country,
