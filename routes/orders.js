@@ -46,25 +46,25 @@ router.post('/', async (req, res) => {
     }))
     const savedOrderItemIds = await orderItemsIds;
 
-    const totalOrderPrice = await Promise.all(savedOrderItemIds.map(async (orderItemId) => {
-        const orderItem = await OrderItem.findById(orderItemId).populate('product', 'price');
-        const totalOrderPrice = orderItem.product.price * orderItem.quantity;
-        return totalOrderPrice
-    }))
+    // const totalOrderPrice = await Promise.all(savedOrderItemIds.map(async (orderItemId) => {
+    //     const orderItem = await OrderItem.findById(orderItemId).populate('product', 'price');
+    //     const totalOrderPrice = orderItem.product.price * orderItem.quantity;
+    //     return totalOrderPrice
+    // }))
 
-    const totalPrice = totalOrderPrice.reduce((a,b) => a + b, 0);
+    // const totalPrice = totalOrderPrice.reduce((a,b) => a + b, 0);
     
     let order = new Order({
         orderItems: savedOrderItemIds,
-        shippingAddress1: req.body.shippingAddress1,
-        shippingAddress2: req.body.shippingAddress2,
-        city: req.body.city,
-        zip: req.body.zip,
-        country: req.body.country,
-        phone: req.body.phone,
-        status: req.body.status,
-        totalPrice: totalPrice,
-        user: req.body.user,
+        // shippingAddress1: req.body.shippingAddress1,
+        // shippingAddress2: req.body.shippingAddress2,
+        // city: req.body.city,
+        // zip: req.body.zip,
+        // country: req.body.country,
+        // phone: req.body.phone,
+        // status: req.body.status,
+        // totalPrice: totalPrice,
+        // user: req.body.user,
     })
     order = await order.save();
 
